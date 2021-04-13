@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <record  id ="patient_list_actions" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">hms.patient</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.ui.view" id="patient_form_view">
+            <field name="name">patient.form</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <form string="Patient Form">
+                    <sheet>
+                        <group>
+                            <field name="first_name" attrs="{'required':True}"/>
+                            <field name="last_name" attrs="{'required':True}"/>
+                            <field name="email"/>
+                            <field name="birth_date"/>
+                            <field name="age" />
+                        </group>
+                    </sheet>
+                    <sheet>
+                        <group>
+                            <field name="history" attrs="{'invisible':[('age','&lt;',50),]}"/>
+                            <field name="cr_ratio" attrs="{'required':[('pcr','=',True)]}"/>
+                            <field name="pcr"/>
+                            <field name="blood_type"/>
+                        </group>
+                        <group>
+                            <field name="image"/>
+                            <field name="address"/>
+                            <field name="department" domain="[('is_opened','=',True)]"/>
+                            <field name="capacity"/>
+                            <field name="status"/>
+                        </group>
+                        <group>
+                            <field name="doctor" widget="many2many_tags" groups="hms.manager_group" />
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <menuitem id="main_hms_menu" name="HMS"/>
+        <menuitem id="hms_menu" name="HMS"
+                  parent="main_hms_menu"/>
+        <menuitem id="patients_menu" name="patients" parent="hms_menu"
+                  action="patient_list_actions"/>
+
+
+    </data>
+</odoo>
